@@ -1,6 +1,16 @@
-import os, shutil, random
+import os, shutil, random, json, discord
 
-# TODO: add "Raises" to functions as needed
+bot = discord.Bot()
+
+def load_secrets() -> dict:
+    """
+    Loads all the secrets from secrets.json into a dict object.
+
+    Returns:
+        A dict containing all the secrets.
+    """
+    with open("secrets.json") as f:
+        return json.load(f)
 
 def count_files(folder: str) -> int:
     """
@@ -67,15 +77,42 @@ def get_random_file(folder: str) -> str|None:
     file_index = random.randrange(0, num_files)
     return os.path.join(folder, os.listdir(folder)[file_index])
 
+@bot.event
+async def on_ready():
+    print(f"We have logged in as {bot.user}")
+
+@bot.slash_command(name="losschannel",
+                   description="Sets the channel for loss.jpg images to the current channel.",
+                   guild_ids=[1189990166396407888])
+@discord.default_permissions(administrator=True)
+async def set_image_channel(ctx: discord.commands.context.ApplicationContext):
+    await ctx.respond("OK")
+
+@bot.slash_command(guild_ids=[1189990166396407888])
+@discord.default_permissions(administrator=True)
+async def debug(ctx: discord.commands.context.ApplicationContext):
+    if ctx.author.id == 465897773007634442:
+        # Ensure nothing times out
+        await ctx.defer()
+
+        # Ensure there are some input images
+        if count_files("./img/in") == 0:
+            move_all_files("./img/out", "./img/in")
+
+        # Get a random image
+        file = get_random_file("./img/in")
+
+        # If the file is None, there are no images available
+        if file is None:
+            await ctx.followup.send("No images are available.")
+        else:
+            await ctx.followup.send(file=discord.File(file))
+
+            # Ensure no duplicate images until all images are sent
+            move_file(file, "./img/out")
+    else:
+        await ctx.respond("Nice try")
+
 if __name__ == "__main__":
-    # Ensure there are some input images
-    if count_files("./img/in") == 0:
-        move_all_files("./img/out", "./img/in")
-
-    # Get a random image
-    file = get_random_file("./img/in")
-
-    # If the file is None, there are no images available
-    if file is not None:
-        # Ensure no duplicate images until all images are sent
-        move_file(file, "./img/out")
+    secrets = load_secrets()
+    bot.run(secrets["bot-token"])

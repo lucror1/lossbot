@@ -1,6 +1,12 @@
+"""
+Contains useful functions used across files.
+"""
 import os, shutil, random, json, discord
+from typing import Any
+from main import bot
 
-bot = discord.Bot()
+_IMG_SRC = "../img/in"
+_IMG_DST = "../img/out"
 
 def load_secrets() -> dict:
     """
@@ -9,10 +15,10 @@ def load_secrets() -> dict:
     Returns:
         A dict containing all the secrets.
     """
-    with open("secrets.json") as f:
+    with open("../secrets.json") as f:
         return json.load(f)
 
-def count_files(folder: str) -> int:
+def _count_files(folder: str) -> int:
     """
     Counts the number of files in the specified directory.
 
@@ -29,7 +35,7 @@ def count_files(folder: str) -> int:
     files = [f for f in files if os.path.isfile(os.path.join(folder, f))]
     return len(files)
 
-def move_file(file: str, dst: str) -> None:
+def _move_file(file: str, dst: str) -> None:
     """
     Moves the specified file to the specified directory.
 
@@ -42,7 +48,7 @@ def move_file(file: str, dst: str) -> None:
     """
     shutil.move(file, dst)
 
-def move_all_files(src: str, dst: str) -> None:
+def _move_all_files(src: str, dst: str) -> None:
     """
     Moves all the files from the src directory to the dest directory.
 
@@ -56,7 +62,7 @@ def move_all_files(src: str, dst: str) -> None:
     for f in os.listdir(src):
         shutil.move(os.path.join(src, f), dst)
 
-def get_random_file(folder: str) -> str|None:
+def _get_random_file(folder: str) -> str|None:
     """
     Gets a random file in the specified directory.
 
@@ -69,7 +75,7 @@ def get_random_file(folder: str) -> str|None:
     Raises:
         FileNotFoundError: The specified folder does not exist.
     """
-    num_files = count_files(folder)
+    num_files = _count_files(folder)
 
     if num_files == 0:
         return None
@@ -77,42 +83,29 @@ def get_random_file(folder: str) -> str|None:
     file_index = random.randrange(0, num_files)
     return os.path.join(folder, os.listdir(folder)[file_index])
 
-@bot.event
-async def on_ready():
-    print(f"We have logged in as {bot.user}")
+def consume_random_image() -> str|None:
+    """
+    Returns the path to a random image, moving it from _IMG_SRC to _IMG_DST.
 
-@bot.slash_command(name="losschannel",
-                   description="Sets the channel for loss.jpg images to the current channel.",
-                   guild_ids=[1189990166396407888])
-@discord.default_permissions(administrator=True)
-async def set_image_channel(ctx: discord.commands.context.ApplicationContext):
-    await ctx.respond("OK")
+    Also ensures that there is always a valid image that can be consumed, if possible. This is not
+    possible if there are no images in either _IMG_SRC or _IMG_DST.
 
-@bot.slash_command(guild_ids=[1189990166396407888])
-@discord.default_permissions(administrator=True)
-async def debug(ctx: discord.commands.context.ApplicationContext):
-    if ctx.author.id == 465897773007634442:
-        # Ensure nothing times out
-        await ctx.defer()
+    Returns:
+        A relative path to the consumed image or None if no images can be found.
+    """
+    # Ensure there are some input images
+    if _count_files(_IMG_SRC) == 0:
+        _move_all_files(_IMG_DST, _IMG_SRC)
 
-        # Ensure there are some input images
-        if count_files("./img/in") == 0:
-            move_all_files("./img/out", "./img/in")
+    # Get a random image
+    file = _get_random_file(_IMG_SRC)
 
-        # Get a random image
-        file = get_random_file("./img/in")
+    # If the file is None, there are no images available
+    if file is None:
+        return None
 
-        # If the file is None, there are no images available
-        if file is None:
-            await ctx.followup.send("No images are available.")
-        else:
-            await ctx.followup.send(file=discord.File(file))
+    # Ensure no duplicate images until all images are sent
+    _move_file(file, _IMG_DST)
 
-            # Ensure no duplicate images until all images are sent
-            move_file(file, "./img/out")
-    else:
-        await ctx.respond("Nice try")
-
-if __name__ == "__main__":
-    secrets = load_secrets()
-    bot.run(secrets["bot-token"])
+    basename = os.path.basename(file)
+    return os.path.join(_IMG_DST, basename)

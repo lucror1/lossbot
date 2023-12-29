@@ -5,8 +5,8 @@ handling new servers and altering channel registration.
 If this script is not running when the bot joins a server, then the bot will not send images in that
 server. An admin would have to manually invoke /losschannel to set the channel.
 """
-import discord, time, os, calendar
-import util, db
+import discord, time, os, calendar, json
+import db
 
 bot = discord.Bot()
 
@@ -59,8 +59,18 @@ def get_new_servers() -> list[discord.Guild]:
 
     return new_servers
 
+def load_secrets() -> dict:
+    """
+    Loads all the secrets from secrets.json into a dict object.
+
+    Returns:
+        A dict containing all the secrets.
+    """
+    with open("../secrets.json") as f:
+        return json.load(f)
+
 if __name__ == "__main__":
-    secrets = util.load_secrets()["discord"]
+    secrets = load_secrets()["discord"]
     db.init(secrets["db-connection"])
     bot.run(secrets["bot-token"])
 

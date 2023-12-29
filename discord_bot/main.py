@@ -3,16 +3,15 @@ Responsible for sending images. It should be executed once daily using systemd, 
 or some other scheduling tool.
 """
 import discord
-import discord_bot.util as util, discord_bot.db as db
+import discord_bot.db as db
 
 bot = discord.Bot()
+file = ""
 
 @bot.event
 async def on_ready():
     print(f"Daily bot logged in as {bot.user}")
 
-    file = util.consume_random_image()
-    print(file)
     if file is None:
         return  # No images are available, don't send anything
 
@@ -40,10 +39,9 @@ async def on_ready():
     print(f"Daily bot completed task")
     await bot.close()
 
-def run(secrets: dict):
+def run(image: str, secrets: dict):
+    global file
+    file = image
+
     db.init(secrets["db-connection"])
     bot.run(secrets["bot-token"])
-
-if __name__ == "__main__":
-    secrets = util.load_secrets()
-    run(secrets["discord"])

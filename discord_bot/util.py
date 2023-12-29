@@ -3,8 +3,8 @@ Contains useful functions used across files.
 """
 import os, shutil, random, json
 
-_IMG_SRC = "../img/in"
-_IMG_DST = "../img/out"
+_IMG_SRC = "./img/in"
+_IMG_DST = "./img/out"
 
 def load_secrets() -> dict:
     """

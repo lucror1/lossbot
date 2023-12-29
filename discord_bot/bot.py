@@ -60,7 +60,7 @@ def get_new_servers() -> list[discord.Guild]:
     return new_servers
 
 if __name__ == "__main__":
-    secrets = util.load_secrets()
+    secrets = util.load_secrets()["discord"]
     db.init(secrets["db-connection"])
     bot.run(secrets["bot-token"])
 

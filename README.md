@@ -4,4 +4,5 @@ other platforms are welcome. Python is preferred, but any language is welcome.
 
 The currently implemented platforms are:
 
-- Discord as "Daily Loss Bot#5278"
+- Discord as Daily Loss Bot#5278
+- Mastodon as [@dailylossbot@mastodon.social](https://mastodon.social/@dailylossbot)

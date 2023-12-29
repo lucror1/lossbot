@@ -117,5 +117,5 @@ if __name__ == "__main__":
 
     image = consume_random_image()
 
-    #discord_main.run(secrets["discord"])
+    discord_main.run(image, secrets["discord"])
     mastodon_main.run(image, secrets["mastodon"])

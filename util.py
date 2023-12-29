@@ -1,7 +1,7 @@
 """
 A set of utility functions.
 """
-import os
+import os, random
 from PIL import Image
 
 def validate_images():
@@ -53,5 +53,33 @@ def _check_bluesky(path: str) -> str|None:
         if len(file_bytes) > 1000000:
             return f"[BSKY] File is too big. ({len(file_bytes)} of 1000000)"
 
-if __name__ == "__main__":
-    strip_exif("./img/in", "./out")
+def generate_image_list(img_folder: str, out_file: str):
+    """
+    Generates a random list of images and saves them to out_file, one per line. If the file already
+    exists, then the order of the included images will be preserved.
+
+    Args:
+        img_folder: The path to the folder that contains the images.
+        out_file: The path to where the randomized list should be saved.
+    """
+    imgs = []
+
+    # Load existing images if possible
+    if os.path.exists(out_file):
+        with open(out_file) as f:
+            imgs = [i.strip() for i in f.readlines()]
+
+    # Get all the images in img_folder not in out_file
+    new_imgs = []
+    for f in os.listdir(img_folder):
+        path = os.path.abspath(os.path.join(img_folder, f))
+        if path not in imgs:
+            new_imgs.append(path)
+
+    # Shuffle the new images
+    random.shuffle(new_imgs)
+
+    # Write everything to disk
+    with open(out_file, "w") as f:
+        for img in imgs + new_imgs:
+            f.write(img + "\n")

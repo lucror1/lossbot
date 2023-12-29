@@ -21,8 +21,6 @@ async def on_ready():
 
 @bot.event
 async def on_guild_join(guild: discord.Guild):
-    # TODO: if the bot isn't running when it joins a guild, this won't trigger. Find a way to tackle
-    # offline joins
     print(f"Joined guild {guild.id}")
 
     for channel in guild.channels:

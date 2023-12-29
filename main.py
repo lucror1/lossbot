@@ -6,6 +6,7 @@ to the image to post, while secrets is a dict of any secrets necessary for the a
 import os, shutil, random, json
 from discord_bot import main as discord_main
 from mastodon_bot import main as mastodon_main
+from bluesky_bot import main as bluesky_main
 
 _IMG_SRC = "./img/in"
 _IMG_DST = "./img/out"
@@ -117,5 +118,6 @@ if __name__ == "__main__":
 
     image = consume_random_image()
 
-    discord_main.run(image, secrets["discord"])
     mastodon_main.run(image, secrets["mastodon"])
+    bluesky_main.run(image, secrets["bluesky"])
+    discord_main.run(image, secrets["discord"])

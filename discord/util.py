@@ -1,9 +1,7 @@
 """
 Contains useful functions used across files.
 """
-import os, shutil, random, json, discord
-from typing import Any
-from main import bot
+import os, shutil, random, json
 
 _IMG_SRC = "../img/in"
 _IMG_DST = "../img/out"

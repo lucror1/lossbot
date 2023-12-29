@@ -6,3 +6,11 @@ The currently implemented platforms are:
 
 - Discord as Daily Loss Bot#5278
 - Mastodon as [@dailylossbot@mastodon.social](https://mastodon.social/@dailylossbot)
+- Bluesky as [@dailylossbot.bsky.social](https://bsky.app/profile/dailylossbot.bsky.social)
+
+Major list of todos at the moment:
+
+- More platforms
+- Alt text (I should have done this to begin with)
+- Gathering more images (please send any and all loss.jpg images my way, even if you think I've
+already seen it)

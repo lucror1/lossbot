@@ -1,8 +1,11 @@
 """
 Manages all daily loss services. All services must contain a "main.py" file with a "run" function.
+"run" must have the signature run(image: str, secrets: dict), where image is an absolute path
+to the image to post, while secrets is a dict of any secrets necessary for the application.
 """
 import os, shutil, random, json
 from discord_bot import main as discord_main
+from mastodon_bot import main as mastodon_main
 
 _IMG_SRC = "./img/in"
 _IMG_DST = "./img/out"
@@ -111,5 +114,8 @@ def _get_random_file(folder: str) -> str|None:
 
 if __name__ == "__main__":
     secrets = _load_secrets()
-    
-    discord_main.run(secrets["discord"])
+
+    image = consume_random_image()
+
+    #discord_main.run(secrets["discord"])
+    mastodon_main.run(image, secrets["mastodon"])

@@ -1,9 +1,6 @@
 # Python build
 FROM python:3.12-alpine
 
-# Expose port
-EXPOSE 5000/tcp
-
 # Set the working directory in the container
 WORKDIR /app
 

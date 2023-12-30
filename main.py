@@ -28,7 +28,7 @@ def consume_random_image() -> str|None:
         imgs = f.readlines()
 
     # Get the current image, looping if necessary
-    return imgs[num_days % len(imgs)]
+    return imgs[num_days % len(imgs)].strip()
 
 def _load_secrets() -> dict:
     """

@@ -27,7 +27,7 @@ def init(conn_str: str) -> None:
         conn_str: The connection string for the database.
     """
     global _engine
-    _engine = create_engine(conn_str, echo=True)
+    _engine = create_engine(conn_str)
     Base.metadata.create_all(_engine)
 
 def register_loss_channel(server_id: int, channel_id: int):

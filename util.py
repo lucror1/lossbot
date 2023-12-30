@@ -83,3 +83,25 @@ def generate_image_list(img_folder: str, out_file: str):
     with open(out_file, "w") as f:
         for img in imgs + new_imgs:
             f.write(img + "\n")
+
+def convert_to_jpg(img_folder: str, out_folder: str, extensions: list[str]=["png", "webp"]):
+    """
+    Converts all non-jpg images in img_folder into jpgs and saves them to out_folder. Only considers
+    files with extensions in the extensions list.
+
+    Args:
+        img_folder: The folder containing images to be converted.
+        out_folder: The folder where converted images will be saved.
+        extensions: An array of extensions to convert.
+    """
+    for f in os.listdir(img_folder):
+        ext = f.split(".")[-1]
+        if ext not in extensions:
+            continue
+
+        im = Image.open(os.path.join(img_folder, f))
+        rgb_im = im.convert("RGB")
+        rgb_im.save(os.path.join(out_folder, f.removesuffix(ext) + "jpg"))
+
+if __name__ == "__main__":
+    generate_image_list("./img/in", "./img_list.txt")

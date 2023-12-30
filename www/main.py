@@ -1,7 +1,8 @@
 from flask import Flask, render_template, send_from_directory, redirect
 import os, datetime
 
-_IMG_LIST = "../img_list.txt"
+_IMG_LIST = "./img_list.txt"
+_IMG_FOLDER = "../img/in"
 
 app = Flask(__name__)
 
@@ -74,7 +75,8 @@ def get_current_image() -> str:
         imgs = f.readlines()
 
     # Get the current image, looping if necessary
-    return imgs[day_index % len(imgs)].strip()
+    f = imgs[day_index % len(imgs)].strip()
+    return os.path.join(_IMG_FOLDER, f)
 
 def get_image_by_index(index: int) -> str|None:
     """
@@ -88,8 +90,8 @@ def get_image_by_index(index: int) -> str|None:
     """
     with open(_IMG_LIST) as f:
         for _ in range(index+1):
-            img_path = f.readline()
-    return img_path.strip()
+            img = f.readline()
+    return os.path.join(_IMG_FOLDER, img.strip())
 
 def get_images_in_range(start_index: int, end_index: int) -> list[str]:
     """

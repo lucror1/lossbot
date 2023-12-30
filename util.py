@@ -72,9 +72,9 @@ def generate_image_list(img_folder: str, out_file: str):
     # Get all the images in img_folder not in out_file
     new_imgs = []
     for f in os.listdir(img_folder):
-        path = os.path.abspath(os.path.join(img_folder, f))
-        if path not in imgs:
-            new_imgs.append(path)
+        #path = os.path.abspath(os.path.join(img_folder, f))
+        if f not in imgs:
+            new_imgs.append(f)
 
     # Shuffle the new images
     random.shuffle(new_imgs)

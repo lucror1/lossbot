@@ -2,7 +2,7 @@ from flask import Flask, render_template, send_from_directory, redirect
 import os, datetime
 
 _IMG_LIST = "./img_list.txt"
-_IMG_FOLDER = "../img/in"
+_IMG_FOLDER = "./img"
 
 app = Flask(__name__)
 

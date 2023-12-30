@@ -6,7 +6,7 @@ The currently implemented platforms are:
 
 - Discord as [Daily Loss Bot#5278](https://discord.com/api/oauth2/authorize?client_id=1190004024410374224&permissions=2048&scope=bot)
 - Mastodon as [@dailylossbot@mastodon.social](https://mastodon.social/@dailylossbot)
-- Bluesky as [@dailylossbot.bsky.social](https://mastodon.social/@dailylossbot)
+- Bluesky as [@dailylossbot.bsky.social](https://bsky.app/profile/dailylossbot.bsky.social)
 
 Major list of todos at the moment:
 

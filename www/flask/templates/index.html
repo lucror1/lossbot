@@ -8,8 +8,11 @@
 {% block body %}
     <main>
         <h2>{{ date }}</h2>
+        {% if running %}
         <img tabindex="0" src="/loss.jpg" width="30%" class="thumbnail" id="daily-loss">
-        <!-- <img src="/loss.jpg" id="daily-loss" height="10%"> -->
+        {% else %}
+        <p>Check back on New Years! This site isn't quite ready yet.</p>
+        {% endif %}
     </main>
     <section id="modal">
         <div class="modal-content">

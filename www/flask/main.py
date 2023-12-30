@@ -3,18 +3,21 @@ import os, datetime
 
 _IMG_LIST = "./img_list.txt"
 _IMG_FOLDER = "./img"
+_START_DATE = datetime.datetime(2024, 1, 1)
 
 app = Flask(__name__)
 
 @app.get("/")
 def index():
-    return render_template("index.html", date=datetime_to_str(datetime.datetime.now()))
+    # Figure out if the service has started yet
+    image_available = get_current_index() >= 0
+    return render_template("index.html", date=datetime_to_str(datetime.datetime.now()),
+                           running=image_available)
 
 @app.get("/archive")
 def archive():
     # Construct dates for images
-    start_date = datetime.datetime(2024, 1, 1)
-    dates = [start_date + datetime.timedelta(days=i) for i in range(get_current_index()+1)]
+    dates = [_START_DATE + datetime.timedelta(days=i) for i in range(get_current_index()+1)]
     dates = [datetime_to_str(d) for d in dates]
 
     return render_template("archive.html", dates=dates)
@@ -53,22 +56,24 @@ def get_current_index() -> int:
     Gets the current index for today's image. This is also the maximum allowable index.
 
     Returns:
-        The index for today's image.
+        The index for today's image or a negative number if no index corresponds to today.
     """
     # Calculate the number of days that have passed
-    # TODO: replace with New Year's date
-    start_date = datetime.datetime(2023, 12, 29, 0, 0, 0, 0)
     now = datetime.datetime.now()
-    return (now - start_date).days
+    num_days = (now - _START_DATE).days
+    return num_days
 
-def get_current_image() -> str:
+def get_current_image() -> str|None:
     """
     Gets the current image for today and returns and absolute path to it.
 
     Returns:
-        An absolute path to today's image.
+        An absolute path to today's image or None if there is not image available.
     """
     day_index = get_current_index()
+
+    if day_index < 0:
+        return None
 
     # Read the image paths in
     with open(_IMG_LIST) as f:

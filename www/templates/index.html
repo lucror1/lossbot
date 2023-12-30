@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+
+{% block head %}
+    <title>Daily Loss</title>
+    <script src="/static/gallery.js"></script>
+{% endblock %}
+
+{% block body %}
+    <main>
+        <h2>{{ date }}</h2>
+        <img tabindex="0" src="/loss.jpg" width="30%" class="thumbnail" id="daily-loss">
+        <!-- <img src="/loss.jpg" id="daily-loss" height="10%"> -->
+    </main>
+    <section id="modal">
+        <div class="modal-content">
+            <span id="modal-close" tabindex="0">&times;</span>
+            <img>
+        </div>
+    </section>
+{% endblock %}

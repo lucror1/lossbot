@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+
+{% block head %}
+    <title>Archive - Daily Loss</title>
+    <script src="/static/gallery.js"></script>
+{% endblock %}
+
+{% block body %}
+    <main>
+        <h2>Archive</h2>
+        <div class="gallery-cont">
+            {% for n in range(dates|length) %}
+            <div>
+                <!-- Icky way to auto-thumbnail the images, probably redo later -->
+                <div tabindex="0" class="thumbnail" style="background-image:url(/img/{{ n }}/loss.jpg)"></div>
+                <p>{{dates[n]}}</p>
+            </div>
+            {%endfor%}
+        </div>
+    </main>
+    <section id="modal">
+        <div class="modal-content">
+            <span id="modal-close" tabindex="0">&times;</span>
+            <img>
+        </div>
+    </section>
+{% endblock %}

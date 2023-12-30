@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lato&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/static/main.css">
+    <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
+    {% block head %}
+    {% endblock %}
+</head>
+<body>
+    <header>
+        <ul>
+            <li><h1><a href="/">Daily Loss</a></h1></li>
+            <li><a href="/archive">Archive</a></li>
+            <li><a href="/about">About</a></li>
+            <li><a target="_blank" href="https://docs.google.com/forms/d/e/1FAIpQLSdOlVg8ktntOWb8yghVVI7hx5Px_DGY_1uor0CGR1ipuJ7CXg/viewform?usp=sf_link">Submit Images</a></li>
+        </ul>
+    </header>
+    {% block body %}
+    {% endblock %}
+</body>
+</html>

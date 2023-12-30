@@ -3,19 +3,20 @@ Manages all daily loss services. All services must contain a "main.py" file with
 "run" must have the signature run(image: str, secrets: dict), where image is an absolute path
 to the image to post, while secrets is a dict of any secrets necessary for the application.
 """
-import json, datetime
+import json, datetime, os
 from discord_bot import main as discord_main
 from mastodon_bot import main as mastodon_main
 from bluesky_bot import main as bluesky_main
 
 _IMG_LIST = "./img_list.txt"
+_IMG_FOLDER = "./img"
 
 def consume_random_image() -> str|None:
     """
     Returns the path to a random image.
 
     Returns:
-        An absolute path to the consumed image or None if no images can be found.
+        A relative path to the consumed image or None if no images can be found.
     """
     # Calculate the number of days that have passed
     # TODO: replace with actual date and New Year's
@@ -28,7 +29,8 @@ def consume_random_image() -> str|None:
         imgs = f.readlines()
 
     # Get the current image, looping if necessary
-    return imgs[num_days % len(imgs)].strip()
+    f = imgs[num_days % len(imgs)].strip()
+    return os.path.join(_IMG_FOLDER, f)
 
 def _load_secrets() -> dict:
     """

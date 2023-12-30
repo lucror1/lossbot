@@ -10,13 +10,10 @@ file = ""
 
 @bot.event
 async def on_ready():
-    print(f"Daily bot logged in as {bot.user}")
-
     if file is None:
         return  # No images are available, don't send anything
 
     channels = db.get_all_channel_ids()
-    print(channels)
 
     for channel_id in channels:
         channel = bot.get_channel(channel_id)
@@ -27,16 +24,10 @@ async def on_ready():
             # Permissions got messed up for this channel
             # TODO: should this channel be removed from the db?
             # Maybe increment some kind of fail counter? If too many fails, remove?
-            print("Forbidden")
             print(e)
-            pass
         except Exception as e:
-            print("Other error")
             print(e)
-            # Don't prevent the other messages from sending
-            pass
 
-    print(f"Daily bot completed task")
     await bot.close()
 
 def run(image: str, secrets: dict):

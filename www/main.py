@@ -35,7 +35,7 @@ def daily_loss():
 
 @app.get("/img/<int:index>/loss.jpg")
 def index_loss(index: int):
-    # TODO: Prevent early access to images
+    # Prevent early access to images
     if index > get_current_index():
         return render_template("forbidden.html"), "403 Forbidden"
 

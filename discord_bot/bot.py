@@ -24,7 +24,7 @@ async def on_guild_join(guild: discord.Guild):
     print(f"Joined guild {guild.id}")
 
     for channel in guild.channels:
-        if type(channel) is discord.TextChannel and channel.can_send(discord.File("../requirements.txt")):
+        if type(channel) is discord.TextChannel and channel.can_send(discord.File("requirements.txt")):
             db.register_loss_channel(guild.id, channel.id)
             break
 
@@ -32,6 +32,7 @@ async def on_guild_join(guild: discord.Guild):
                    description="Sets the channel for loss.jpg images to the current channel.")
 @discord.default_permissions(administrator=True)
 async def set_image_channel(ctx: discord.commands.context.ApplicationContext):
+    await ctx.defer()
     db.register_loss_channel(ctx.guild_id, ctx.channel_id)
     await ctx.respond(":thumbsup:")
 
@@ -69,7 +70,7 @@ def load_secrets() -> dict:
 
 if __name__ == "__main__":
     secrets = load_secrets()["discord"]
-    db.init(secrets["db-connection"])
+    db.init(secrets["bot-db-connection"])
     bot.run(secrets["bot-token"])
 
     # Record when the bot stopped

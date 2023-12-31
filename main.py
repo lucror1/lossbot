@@ -19,8 +19,7 @@ def consume_random_image() -> str|None:
         A relative path to the consumed image or None if no images can be found.
     """
     # Calculate the number of days that have passed
-    # TODO: replace with actual date and New Year's
-    start_date = datetime.datetime(2023, 12, 29, 0, 0, 0, 0)
+    start_date = datetime.datetime(2024, 1, 1)
     now = datetime.datetime.now()
     num_days = (now - start_date).days
 
@@ -47,6 +46,6 @@ if __name__ == "__main__":
 
     image = consume_random_image()
 
-    mastodon_main.run(image, secrets["mastodon"])
-    bluesky_main.run(image, secrets["bluesky"])
+    #mastodon_main.run(image, secrets["mastodon"])
+    #bluesky_main.run(image, secrets["bluesky"])
     discord_main.run(image, secrets["discord"])

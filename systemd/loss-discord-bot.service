@@ -1,0 +1,14 @@
+[Unit]
+Description=The bot portion of Discord for Daily Loss
+After=network.target
+
+[Service]
+Type=simple
+Restart=always
+RestartSec=1
+User=nginx
+WorkingDirectory=/home/ec2-user/LossBot/discord_bot/
+ExecStart=/usr/bin/python3.11 bot.py
+
+[Install]
+WantedBy=multi-user.target

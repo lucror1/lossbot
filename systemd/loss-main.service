@@ -1,0 +1,10 @@
+[Unit]
+Description=A cross-platform bot to post loss.jpg images
+After=network.target
+Wants=loss-main.timer
+
+[Service]
+Type=oneshot
+User=nginx
+WorkingDirectory=/home/ec2-user/LossBot/
+ExecStart=/usr/bin/python3.11 main.py

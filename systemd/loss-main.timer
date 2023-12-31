@@ -1,0 +1,9 @@
+[Unit]
+Description=Post loss.jpg images on all platforms daily
+
+[Timer]
+OnCalendar=daily
+Persistent=true
+
+[Install]
+WantedBy=timers.target

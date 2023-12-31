@@ -2,6 +2,8 @@
 FROM python:3.12-alpine
 
 # Set the working directory in the container
+RUN adduser -S -s /sbin/nologin -D flask
+USER flask
 WORKDIR /app
 
 # Install any dependencies
@@ -16,4 +18,4 @@ COPY img_list.txt img_list.txt
 COPY main.py .
 
 # Specify the command to run on container start
-CMD [ "waitress-serve", "--port", "5000", "main:app" ]
+CMD [ "/home/flask/.local/bin/waitress-serve", "--port", "5000", "main:app" ]

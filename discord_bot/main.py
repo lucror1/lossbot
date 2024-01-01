@@ -24,6 +24,7 @@ async def on_ready():
             # Permissions got messed up for this channel
             # TODO: should this channel be removed from the db?
             # Maybe increment some kind of fail counter? If too many fails, remove?
+            # At least check if the bot is not in the server anymore and remove it from the db if so
             print(e)
         except Exception as e:
             print(e)

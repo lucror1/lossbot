@@ -14,6 +14,9 @@ bot = discord.Bot()
 async def on_ready():
     print(f"Main bot logged in as {bot.user}")
 
+    # Set custom status
+    await bot.change_presence(status=discord.Status.online, activity=discord.Activity(type=discord.ActivityType.watching, name="loss.jpg compilations"))
+
     servers = get_new_servers()
 
     for server in servers:
@@ -32,6 +35,8 @@ async def on_guild_join(guild: discord.Guild):
                    description="Sets the channel for loss.jpg images to the current channel.")
 @discord.default_permissions(administrator=True)
 async def set_image_channel(ctx: discord.commands.context.ApplicationContext):
+    if not ctx:
+        return
     await ctx.defer()
     db.register_loss_channel(ctx.guild_id, ctx.channel_id)
     await ctx.respond(":thumbsup:")

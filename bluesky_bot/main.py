@@ -1,4 +1,4 @@
-import requests, datetime, json, magic
+import requests, datetime, magic
 
 def get_session(username: str, app_password: str) -> dict|None:
     """
@@ -20,7 +20,7 @@ def get_session(username: str, app_password: str) -> dict|None:
         return None
     return resp.json()
 
-def construct_post(img_blob: dict) -> dict:
+def construct_post(img_blob: dict, date: str) -> dict:
     """
     Construct a Bluesky post for the given image, but does not post it.
 
@@ -34,7 +34,7 @@ def construct_post(img_blob: dict) -> dict:
     now = datetime.datetime.now(datetime.timezone.utc).isoformat().replace("+00:00", "Z")
     return {
         "$type": "app.bsky.feed.post",
-        "text": "Testing images.",
+        "text": f"Daily Loss for {date}",
         "createdAt": now,
         "embed": {
             "$type": "app.bsky.embed.images",
@@ -70,7 +70,7 @@ def upload_image(image: str, accessJwt: str):
     )
     return resp.json()["blob"]
 
-def run(image: str, secrets: dict):
+def run(image: str, secrets: dict, date: str):
     # Sign in
     session = get_session(secrets["username"], secrets["password"])
 
@@ -78,7 +78,7 @@ def run(image: str, secrets: dict):
     img_blob = upload_image(image, session["accessJwt"])
 
     # Construct the post
-    post = construct_post(img_blob)
+    post = construct_post(img_blob, date)
 
     # Actually post it
     resp = requests.post(

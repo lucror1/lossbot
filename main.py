@@ -1,7 +1,8 @@
 """
 Manages all daily loss services. All services must contain a "main.py" file with a "run" function.
-"run" must have the signature run(image: str, secrets: dict), where image is an absolute path
-to the image to post, while secrets is a dict of any secrets necessary for the application.
+"run" must have the signature run(image: str, secrets: dict, date: str), where image is a relative
+path to the image to post, secrets is a dict of any secrets necessary for the application, and date
+is the current date formated as a string.
 """
 import json, datetime, os
 from discord_bot import main as discord_main
@@ -31,6 +32,12 @@ def consume_random_image() -> str|None:
     f = imgs[num_days % len(imgs)].strip()
     return os.path.join(_IMG_FOLDER, f)
 
+def datetime_to_str(dt: datetime.datetime) -> str:
+    """
+    Converts a datetime to a string of the format "%A, %B %-d, %Y".
+    """
+    return dt.strftime("%A, %B ") + dt.strftime("%d").removeprefix("0") + dt.strftime(", %Y")
+
 def _load_secrets() -> dict:
     """
     Loads all the secrets from secrets.json into a dict object.
@@ -44,8 +51,9 @@ def _load_secrets() -> dict:
 if __name__ == "__main__":
     secrets = _load_secrets()
 
+    now = datetime_to_str(datetime.datetime.now())
     image = consume_random_image()
 
-    #mastodon_main.run(image, secrets["mastodon"])
-    #bluesky_main.run(image, secrets["bluesky"])
-    discord_main.run(image, secrets["discord"])
+    mastodon_main.run(image, secrets["mastodon"], now)
+    bluesky_main.run(image, secrets["bluesky"], now)
+    discord_main.run(image, secrets["discord"], now)

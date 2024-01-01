@@ -30,7 +30,7 @@ async def on_ready():
 
     await bot.close()
 
-def run(image: str, secrets: dict):
+def run(image: str, secrets: dict, date: str):
     global file
     file = image
 
